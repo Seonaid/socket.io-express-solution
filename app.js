@@ -1,4 +1,5 @@
-var app = require('express')(),
+var express = require('express'),
+    app = express(),
     session = require('express-session'),
     cookie = require('cookie'),
     cookieParser = require('cookie-parser'),
@@ -9,6 +10,7 @@ var COOKIE_NAME = 'sid';
 
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
+app.use(express.static(__dirname + '/public'));
 app.use(cookieParser(COOKIE_SECRET));
 app.use(session({
     name: COOKIE_NAME,
@@ -32,6 +34,8 @@ app.get('/', function (req, res) {
 
 var server = require('http').Server(app).listen(8888),
     io = require('socket.io')(server);
+
+console.log( 'Server is listening on port', 8888 );
 
 io.use(function(socket, next) {
     try {
